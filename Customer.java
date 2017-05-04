@@ -4,7 +4,7 @@ public class Customer{
   private boolean isFat;
   private int[] arrival;
   private int[] leave;
-  private int wait = 0;
+  private int wait = -1;
   private Gen customerRand = new Gen();
   public Customer(int hour, int minute){
     this.name  = customerRand.nGen();
@@ -18,7 +18,8 @@ public class Customer{
   }
   
   public void leave(int hour, int minute){
-    leave = new int[]{hour, minute};
+    if(wait == 0)
+      leave = new int[]{hour, minute};
   }
   
   public int[][] getTime(){
@@ -27,7 +28,7 @@ public class Customer{
   }
   
   public void getServed(){
-    if(wait == 0)
+    if(wait == -1)
       wait = customerRand.rGen(2, 14);
   }
   

@@ -29,19 +29,31 @@ public class Simulation{
       }
       
       $("Making " + n + " lines");
-      ServingLine lines = new Serving line(n, 8);
+      ServingLine lines = new ServingLine(n, 8);
       
       $("Starting sim loop...");
-      for(int count = 0; count < t; count++){
+      Customer temp;
+      for(int count = 0; count < t * 60; count++){
         tick();
+        for(int rate = 0; rate < m; rate++){
+          temp = new Customer(hour, minute);
+          $(temp + " Has joined the line");
+          lines.joinLine(temp);
+        }
         
+        if( lines != null || lines.nOfLines != 0)
+          lines.ellapse(hour, minute);
+        if( minute % 10 == 0 )
+          $("Time = " + hour + ":" + minute);
+        lines.serve();
       }
-      
+      timeToExit = true;
     }
   }
   private static void $(String in){
-    if(DEBUG)
-      System.out.println("$ " + in); 
+    if(DEBUG) try{
+      System.out.printf("$ %s\n", in); 
+    } catch (Exception e ){}
   }
   
   private static void tick(){

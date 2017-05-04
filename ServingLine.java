@@ -26,4 +26,16 @@ public class ServingLine
     }
     return true;
   }
+  
+  public void serve(){
+    for(int count = 0; count < nOfLines; count++){
+      lines[count].serve();
+    }
+  }
+  
+  public void ellapse(int hour, int minute){
+    for(int count = 0; count < nOfLines; count++){
+      lines[count].ellapse(hour, minute); 
+    }
+  }
 }

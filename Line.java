@@ -6,6 +6,7 @@ public class Line
   public  int max;
   private int backOfLine = 0;
   private Gen random = new Gen();
+  private boolean hasBeenServed = false;
   
   public Line(int length){
     customers = new Customer[length]; 
@@ -31,7 +32,7 @@ public class Line
     }
   }
   
-  public Customer getOurOfLine(){
+  public Customer getOutOfLine(){
     if(backOfLine == 5 ){
       int temp = backOfLine;
       backOfLine--;
@@ -39,10 +40,25 @@ public class Line
     }
     int temp = backOfLine;
     backOfLine--;
+    hasBeenServed = false;
     return customers[temp];
   }
   
   public int getLength(){
     return backOfLine; 
+  }
+  
+  public void ellapse(int hour, int minute){
+    if(customers[0].ellapse()){
+      customers[0].leave(hour, minute);
+      getOutOfLine();
+    }
+  }
+  
+  public void serve(){
+    if( !hasBeenServed ) {
+      customers[0].getServed();
+      hasBeenServed = true;
+    }
   }
 }
