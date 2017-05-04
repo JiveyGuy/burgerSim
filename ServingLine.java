@@ -1,11 +1,18 @@
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class ServingLine 
+public class ServingLine<Key> 
 {
-  public int nOfLines;
+  public int nOfLines = 0;
   Line[] lines;
   public String stats;
-  int[] maxWait = 0;
+  int maxWait = 0;
+  int avgLength = 0;
+  int maxLength = 0;
+  int emptyEvents = 0;
+  
   public ServingLine(int n, int max)
   {
     n = ( n < 1 ) ? 1 : n;
@@ -17,28 +24,30 @@ public class ServingLine
     }
   }
   
+  public boolean isEmpty() {
+    return nOfLines == 0;
+  }
+  
   public boolean joinLine(Customer newCustomer){
     Arrays.sort(lines);
     if( lines[0].getLength() == lines[0].max )
       return false;
-    else try {
+    else {
       lines[0].getInLine(newCustomer);
-    } catch (Exception e){
-      
-    }
-    return true;
+      return true;
+    } 
+    
   }
   
   
-  public void serve(){
-    for(int count = 0; count < nOfLines; count++){
-      lines[count].serve();
-    }
-  }
+
   
   public void ellapse(int hour, int minute){
     for(int count = 0; count < nOfLines; count++){
-      lines[count].ellapse(hour, minute); 
+      Customer temp = lines[count].ellapse(hour, minute);
+      if ( temp != null && temp.arrival[0] != -1){
+        maxWaitTime(temp.getTime()); 
+      }
     }
   }
   
@@ -49,10 +58,29 @@ public class ServingLine
     }
     
   }
-  public void updateStats(String in){
+  public void avgLineLength(){
     int sum = 0;
     for(int count = 0; count < nOfLines; count++){
       sum += lines[count].getLength(); 
     } sum /= nOfLines;
+    avgLength += sum;
+    avgLength /= 2;
+  }
+  
+  public void maxLineLength(){
+    int max = Integer.MIN_VALUE;
+    for(int count = 0; count < nOfLines; count++){
+      if( max < lines[count].getLength())
+        max = lines[count].getLength(); 
+    } 
+    if( max > maxLength )
+      maxLength = max;
+  }
+  
+  public void emptyCheck(){
+    for(int count = 0; count < nOfLines; count++){
+      if( lines[count].getLength() == 0)
+        emptyEvents++; 
+    }
   }
 }

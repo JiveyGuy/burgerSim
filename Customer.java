@@ -2,9 +2,9 @@ public class Customer{
   private String name;
   private int age;
   private boolean isFat;
-  private int[] arrival;
+  public int[] arrival;
   private int[] leave;
-  private int wait = -1;
+  public int wait = -1;
   private Gen customerRand = new Gen();
   public Customer(int hour, int minute){
     this.name  = customerRand.nGen();

@@ -44,12 +44,12 @@ public class Simulation{
         lines.ellapse(hour, minute);
         if( minute % 10 == 0 )
           $("Time = " + hour + ":" + minute);
-        lines.serve();
+        
       }
       timeToExit = true;
     }
   }
-  private static void $(String in){
+  public static void $(String in){
     if(DEBUG) try{
       System.out.printf("$ %s\n", in); 
     } catch (Exception e ){}

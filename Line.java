@@ -12,53 +12,68 @@ public class Line
     customers = new Customer[length]; 
     this.max = length;
   }
-  public void getInLine(Customer newCustomer) throws Exception{
+  public void getInLine(Customer newCustomer){
     if( backOfLine == 0 ){
       customers[0] = newCustomer;
       backOfLine++;
     } else {
       if( backOfLine == 5 ){
-        throw new Exception("Hey buddy, there is no room in this line, get lost." );
+        Simulation.$("Hey buddy, there is no room in this line, get lost." );
       } else {
         customers[backOfLine] = newCustomer;
+        customers[backOfLine].getServed();
         backOfLine++;
-        if( random.gGen(1) % 2  == 0) {
-          cuts++;
-          if( random.gGen(1) % 2  == 0 ){
-            fights++;
-          }
+        if( random.gGen(1) % 2  == 0 ){
+          fights++;
         }
       }
     }
+    
   }
-  
-  public Customer getOutOfLine(){
-    if(backOfLine == 5 ){
-      int temp = backOfLine;
-      backOfLine--;
-      return customers[temp];
+
+public void bubbleSort(Customer[] array) {
+    boolean swapped = true;
+    int j = 0;
+    Customer tmp;
+    while (swapped) {
+        swapped = false;
+        j++;
+        for (int i = 0; i < array.length - j; i++) {
+            if (array[i].wait > array[i + 1].wait 
+                  && array[i].wait != -1 
+                  && array[i + 1]  != -1) {
+                tmp = array[i];
+                array[i] = array[i + 1];
+                array[i + 1] = tmp;
+                swapped = true;
+            }
+        }
     }
+    customers = array;
+}
+
+public Customer getOutOfLine(){
+  if(backOfLine == 5 ){
     int temp = backOfLine;
     backOfLine--;
-    hasBeenServed = false;
     return customers[temp];
   }
-  
-  public int getLength(){
-    return backOfLine; 
-  }
-  
-  public void ellapse(int hour, int minute){
-    if(customers[0].ellapse()){
-      customers[0].leave(hour, minute);
-      getOutOfLine();
-    }
-  }
-  
-  public void serve(){
-    if( !hasBeenServed ) {
-      customers[0].getServed();
-      hasBeenServed = true;
-    }
-  }
+  int temp = backOfLine;
+  backOfLine--;
+  hasBeenServed = false;
+  return customers[temp];
+}
+
+public int getLength(){
+  return backOfLine; 
+}
+
+public Customer ellapse(int hour, int minute){
+  if(customers[0].ellapse()){
+    customers[0].leave(hour, minute);
+    return getOutOfLine();
+  } return new Customer(-1, -1);
+}
+
+
 }
