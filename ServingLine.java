@@ -4,6 +4,8 @@ public class ServingLine
 {
   public int nOfLines;
   Line[] lines;
+  public String stats;
+  int[] maxWait = 0;
   public ServingLine(int n, int max)
   {
     n = ( n < 1 ) ? 1 : n;
@@ -27,6 +29,7 @@ public class ServingLine
     return true;
   }
   
+  
   public void serve(){
     for(int count = 0; count < nOfLines; count++){
       lines[count].serve();
@@ -37,5 +40,19 @@ public class ServingLine
     for(int count = 0; count < nOfLines; count++){
       lines[count].ellapse(hour, minute); 
     }
+  }
+  
+  public void maxWaitTime(int[][] input){
+    int time =  ( ( input[1][0] * 60 ) + input[1][1] )  -  ( ( 60 * input[0][0]) + input[0][1] );
+    if( time > maxWait ){
+      maxWait = time;
+    }
+    
+  }
+  public void updateStats(String in){
+    int sum = 0;
+    for(int count = 0; count < nOfLines; count++){
+      sum += lines[count].getLength(); 
+    } sum /= nOfLines;
   }
 }

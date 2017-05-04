@@ -7,6 +7,7 @@ public class Simulation{
   private static int hour = 8;
   private static int minute = 0;
   private static int day = 1;
+  private static ServingLine lines;
   private static Gen random = new Gen();
   private static final boolean DEBUG = true;
   public static void main(String args[]){
@@ -29,7 +30,7 @@ public class Simulation{
       }
       
       $("Making " + n + " lines");
-      ServingLine lines = new ServingLine(n, 8);
+      lines = new ServingLine(n, 8);
       
       $("Starting sim loop...");
       Customer temp;
@@ -37,12 +38,10 @@ public class Simulation{
         tick();
         for(int rate = 0; rate < m; rate++){
           temp = new Customer(hour, minute);
-          $(temp + " Has joined the line");
+          $(temp + "");
           lines.joinLine(temp);
         }
-        
-        if( lines != null || lines.nOfLines != 0)
-          lines.ellapse(hour, minute);
+        lines.ellapse(hour, minute);
         if( minute % 10 == 0 )
           $("Time = " + hour + ":" + minute);
         lines.serve();
@@ -57,9 +56,10 @@ public class Simulation{
   }
   
   private static void tick(){
-    if(hour == 21 ){
+    if(hour == 16 ){
       day++;
       hour = 8;
+      lines = new ServingLine(n, 8);
     } else if ( minute == 60 ){
       hour++;
       minute = 0;
