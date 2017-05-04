@@ -26,8 +26,15 @@ public class Line
             }
         }
     }
-    
+
     public Customer getOurOfLine(){
-        
+        if(backOfLine == 5 ){
+            int temp = backOfLine;
+            backOfLine--;
+            return customers[temp];
+        }
+        int temp = backOfLine;
+        backOfLine--;
+        return customers[temp];
     }
 }
